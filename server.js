@@ -5,16 +5,23 @@ const app = express();
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-  console.log(req.cookies);
-  res.send(`hello ${req.cookies.token ? req.cookies.token : 'guest'}`);
+  let name = req.cookies.name ? req.cookies.name : 'guest';
+  res.send(`
+  <h1>hello ${name}</h1>
+  <form action='/login'>
+  <button type="submit">Send</button>
+  </form>
+  `);
 });
 
 app.get('/login', (req, res) => {
-  res.cookie('token', 'amr', {
+  res.cookie('name', 'amr', {
     httpOnly: true,
     expires: new Date(Date.now() + 60000),
   });
-  res.send('Hello Login !');
+  res.send(`<h1>Hello Login ! </h1><form action='/'>
+  <button type="submit">back</button>
+  </form>`);
 });
 
 const PORT = process.env.PORT || 3000;
